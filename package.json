@@ -39,6 +39,7 @@
     "@seneca/provider": "^0.2.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.12",
+    "@types/underscore": "^1.11.4",
     "esbuild": "^0.14.3",
     "esbuild-jest": "^0.5.0",
     "jest": "^27.4.4",
@@ -53,6 +54,8 @@
     "seneca-promisify": ">=2"
   },
   "dependencies": {
-    "@octokit/rest": "^18.12.0"
+    "@octokit/rest": "^18.12.0",
+    "googleapis": "^39.2.0",
+    "underscore": "^1.13.2"
   }
 }
