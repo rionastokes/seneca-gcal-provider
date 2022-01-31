@@ -12,7 +12,14 @@ import _ from 'underscore';
     - Both list_calendars and get_calendar only uses the main(primary) calendar.
 */
 
-function GcalProvider(this: any, _options: any) {
+export const TOKEN_OPTIONS = {
+  test: 'test',
+  oauth2: 'oauth2',
+  api_key: 'api_key',
+  robot: 'robot',
+};
+
+function GcalProvider(this: any, options: any) {
   const seneca: any = this;
   let oAuth2Client: OAuth2Client;
   let gCalendar: calendar_v3.Calendar;
@@ -86,6 +93,19 @@ function GcalProvider(this: any, _options: any) {
   }
 
   function init(msg: any, respond: CallableFunction) {
+    const { api_source } = options;
+    switch (api_source) {
+      case TOKEN_OPTIONS.test:
+        return respond(msg);
+      case TOKEN_OPTIONS.robot:
+      case TOKEN_OPTIONS.api_key:
+        throw new Error("TODO: Not implemented");
+      case TOKEN_OPTIONS.oauth2:
+        return oAuth2Flow(msg, respond);
+    }
+  }
+
+  async function oAuth2Flow(msg: any, respond: CallableFunction) {
     Fs.readFile('config/google-cloud-credentials.json', async (err, content) => {
       if (err) {
         throw new Error(`Error loading client secret file: ${err}`);
