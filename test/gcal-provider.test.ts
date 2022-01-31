@@ -1,9 +1,25 @@
 const Seneca = require('seneca');
 import { assert } from 'console';
-import GCalProvider from '../src/gcal-provider';
+import GCalProvider, { TOKEN_OPTIONS } from '../src/gcal-provider';
 
 describe('gcal-provider', () => {
     jest.setTimeout(100000);
+
+    const SELECTED_TOKEN_OPTION = TOKEN_OPTIONS.test;
+
+    test('can-boot-gcal-plugin', async () => {
+        const seneca = Seneca({ legacy: false })
+            .test()
+            .use('promisify')
+            .use(GCalProvider, {
+                api_source: SELECTED_TOKEN_OPTION,
+            });
+        await seneca.ready()
+    });
+
+    if (SELECTED_TOKEN_OPTION === TOKEN_OPTIONS.test) {
+        return;
+    }
 
     test('can-boot-gcal-plugin', async () => {
         const seneca = Seneca({ legacy: false })
